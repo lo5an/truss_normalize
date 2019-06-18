@@ -16,6 +16,7 @@ My workflow for running the script in a python virtual environment looks somethi
 git clone git@github.com:lo5an/truss_normalize.git
 cd truss_normalize
 python3 -m venv ./env
+. env/bin/activa 
 pip install -r requirements.txt
 python3 truss_normalize.py  < ~/Downloads/sample.csv  > clean.csv
 ```
