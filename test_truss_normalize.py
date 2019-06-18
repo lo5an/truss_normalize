@@ -16,3 +16,9 @@ def test_normalize_postal():
 def test_normalize_fullname():
     assert normalize_fullname("EXáMPLE name") == "EXÁMPLE NAME"
     assert normalize_fullname("株式会社スタジオジブリ") == "株式会社スタジオジブリ"
+
+def test_normalize_duration():
+    assert normalize_duration("0:0:6.0") == 6
+    assert normalize_duration("0:1:6.0") == 66
+    assert normalize_duration("0:1:6.0") == 66
+    assert normalize_duration("10:1:6.0") == 36066

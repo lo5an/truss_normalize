@@ -27,15 +27,27 @@ def normalize_postal(postal):
 def normalize_fullname(fname):
     return fname.upper()
 
+def normalize_duration(dur_str):
+    hrs,mins,remainder = dur_str.split(":")
+    secs,mics = remainder.split(".")
+
+    dur = datetime.timedelta(hours = int(hrs),
+                             minutes = int(mins),
+                             seconds = int(secs),
+                             microseconds = int(mics))
+
+
+    return dur.total_seconds()
+
 def truss_normalize(row):
 
     timestamp = normalize_timestamp(row[0])
     address = row[1]
     postal = normalize_postal(row[2]) #  Zip in row headers
     fullname = normalize_fullname(row[3])
-    fooduration = row[4]
-    barduration = row[5]
-    totalduration = row[6]
+    fooduration = normalize_duration(row[4])
+    barduration = normalize_duration(row[5])
+    totalduration = fooduration+barduration
     notes = row[7]
 
     normal_row = [ timestamp, address, postal, fullname, fooduration,
