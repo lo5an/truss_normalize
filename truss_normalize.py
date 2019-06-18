@@ -11,19 +11,25 @@ import pytz
 def normalize_timestamp(ts_text):
 
     time_fmt = "%m/%d/%y %I:%M:%S %p"
-    time=datetime.datetime.strptime(ts_text, time_fmt)
+    time = datetime.datetime.strptime(ts_text, time_fmt)
     # Input timezone is US/Pacific
     time_pt = pytz.timezone('US/Pacific').localize(time)
 
     # Desired output timezone is US/Eastern
     return time_pt.astimezone(pytz.timezone('US/Eastern')).isoformat()
 
+
+def normalize_postal(postal):
+    if (len(postal) > 5):
+        raise ValueError('Zip colume should contain 5 or fewer digits')
+    return postal.zfill(5)
+
 def truss_normalize(row):
 
     timestamp = normalize_timestamp(row[0])
     address = row[1]
-    postal = row[2] #  Zip
     fullname = row[3]
+    postal = normalize_postal(row[2]) #  Zip
     fooduration = row[4]
     barduration = row[5]
     totalduration = row[6]
