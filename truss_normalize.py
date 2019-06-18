@@ -3,6 +3,35 @@
 import sys
 import io
 import csv
+import datetime
+import pytz
+
+
+
+def normalize_timestamp(ts_text):
+
+    time_fmt = "%m/%d/%y %I:%M:%S %p"
+    time=datetime.datetime.strptime(ts_text, time_fmt)
+    # Input timezone is US/Pacific
+    time_pt = pytz.timezone('US/Pacific').localize(time)
+
+    # Desired output timezone is US/Eastern
+    return time_pt.astimezone(pytz.timezone('US/Eastern')).isoformat()
+
+def truss_normalize(row):
+
+    timestamp = normalize_timestamp(row[0])
+    address = row[1]
+    postal = row[2] #  Zip
+    fullname = row[3]
+    fooduration = row[4]
+    barduration = row[5]
+    totalduration = row[6]
+    notes = row[7]
+
+    normal_row = [ timestamp, address, postal, fullname, fooduration,
+                  barduration,totalduration,notes ]
+    return(normal_row)
 
 def main():
 
@@ -16,8 +45,11 @@ def main():
     # process line at a time, not filewise
     csvlines = csv.reader(iter(utf8_stdin.readline, ''))
     for row in csvlines:
-        out_row = row
-        csv_out.writerow(out_row)
+        try:
+            out_row = truss_normalize(row)
+            csv_out.writerow(out_row)
+        except Exception as e:
+            print('Error: %s' % e, file=sys.stderr)
 
 if __name__=='__main__':
     rc = 1
