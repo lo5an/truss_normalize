@@ -1,7 +1,6 @@
 import pytest
 from truss_normalize import *
 
-
 def test_normalize_timestamp():
 
     assert normalize_timestamp("4/1/11 11:00:00 AM") == "2011-04-01T14:00:00-04:00"
@@ -13,3 +12,7 @@ def test_normalize_postal():
 
     with pytest.raises(Exception):
         assert normalize_postal("123456")
+
+def test_normalize_fullname():
+    assert normalize_fullname("EXáMPLE name") == "EXÁMPLE NAME"
+    assert normalize_fullname("株式会社スタジオジブリ") == "株式会社スタジオジブリ"

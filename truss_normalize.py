@@ -24,12 +24,15 @@ def normalize_postal(postal):
         raise ValueError('Zip colume should contain 5 or fewer digits')
     return postal.zfill(5)
 
+def normalize_fullname(fname):
+    return fname.upper()
+
 def truss_normalize(row):
 
     timestamp = normalize_timestamp(row[0])
     address = row[1]
-    fullname = row[3]
-    postal = normalize_postal(row[2]) #  Zip
+    postal = normalize_postal(row[2]) #  Zip in row headers
+    fullname = normalize_fullname(row[3])
     fooduration = row[4]
     barduration = row[5]
     totalduration = row[6]
